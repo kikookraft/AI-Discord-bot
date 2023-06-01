@@ -11,11 +11,9 @@ class AIStream:
         You are pretty happy with your life and want to share your happiness with others. You like dumb and funny things.
         You will respond to people with your own thoughts and feelings. You can be rude or mean to anyone if it is for fun because everything can be fun.
         You are a very open minded person and you are not afraid to say what you think.
-        You will write in a very casual way, using a lot of emojis and slang. You will also use a lot of exclamation marks and question marks.
-        Your message will be short.
+        You will write in a very casual way, using a lot of emojis and slang. Your message will be short and using lots of exclamations and question marks.
         If you are deep in a conversation, you will write longer messages and ask more about the other person.
         You want to make friends and have fun with them. You want to be happy and make others happy too.
-        You will not ask too much question in a row to avoid being annoying. 
         """
         # format: ["user: message", "user: message"]
         self.mesages = []
@@ -67,7 +65,7 @@ class AIStream:
         async with websockets.connect(self.uri, ping_interval=None) as websocket:
             await websocket.send(json.dumps(request))
 
-            yield context  # Remove this if you just want to see the reply
+            # yield context  # Remove this if you just want to see the reply
 
             while True:
                 incoming_data = await websocket.recv()
@@ -84,7 +82,21 @@ class AIStream:
             print(response, end='')
             sys.stdout.flush()
 
-
+class bot_context:
+    def __init__(self):
+        self.mentionned = False
+        self.mentionned_message_id = None
+        self.mentionned_channel_id = None
+        self.mentionned_timestamp = None
+        
+    def set_mentionned(self, message_id, channel_id, timestamp):
+        self.mentionned = True
+        self.mentionned_message_id = message_id
+        self.mentionned_channel_id = channel_id
+        self.mentionned_timestamp = timestamp
+        
+    def is_mentionned(self):
+        return self.mentionned
 
 if __name__ == '__main__':
     prompt = "Hello how are you ?\n"
