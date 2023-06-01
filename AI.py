@@ -19,7 +19,8 @@ class AIStream:
         self.mesages = []
         
     def add_message(self, user, message):
-        self.messages.append(user + ": " + message + "\n")
+        formatted_message = f"{user}: {message}\n"
+        self.messages.append(formatted_message)
         
     def messages_to_context(self) -> str:
         context = ""
@@ -31,11 +32,11 @@ class AIStream:
         # create the full context with the character personality
         #contexct is in the form "user: message\n"
         context = self.character + "Here is what users said:\n" + self.messages_to_context() + f"{user}: " + context + "\n"
-        print(context)
+        print(context[len(self.character)+25:])
         
         request = {
             'prompt': context,
-            'max_new_tokens': 250,
+            'max_new_tokens': 400,
             'do_sample': True,
             'temperature': 1.3,
             'top_p': 0.1,
