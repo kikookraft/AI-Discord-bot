@@ -27,11 +27,14 @@ async def on_message(message):
         # use AI to get response
         stream = AIStream('localhost:9999', 'ws://localhost:9999/api/v1/stream')
         context = "\n".join(messages)
+        context += question + "\n"
         # trigger the iswritting event
         await message.channel.trigger_typing()
         try:
+            rep = ""
             async for response in stream.run(context, message.author.name):
-                await message.channel.send(response)
+                rep += response
+            await message.channel.send(rep)
         except Exception as e:
             print(e)
             await message.channel.send("Sorry, I'm not available right now.\nPlease try again later.")

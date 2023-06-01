@@ -30,7 +30,8 @@ class AIStream:
     async def run(self, context, user):
         # create the full context with the character personality
         #contexct is in the form "user: message\n"
-        context = self.character + "Here is what users said:\n" + self.messages_to_context() + "%s: %s" % (user, context)
+        context = self.character + "Here is what users said:\n" + self.messages_to_context() + f"{user}: " + context + "\n"
+        print(context)
         
         request = {
             'prompt': context,
