@@ -1,4 +1,4 @@
-from testGPT import AIStream
+from AI import AIStream
 import asyncio
 import discord
 from discord.ext import commands
@@ -38,9 +38,7 @@ async def get_message_context(message):
     return context
 
 async def get_ai_response(question, context):
-    # Appel à votre IA pour obtenir une réponse en fonction de la question et du contexte
-    # Remplacez cette fonction par votre propre logique d'appel à l'IA
-    # Vous pouvez utiliser des bibliothèques d'IA telles que OpenAI GPT-3 ou TensorFlow
+    # get ai response
 
     # Exemple simplifié avec une réponse aléatoire
     import random
