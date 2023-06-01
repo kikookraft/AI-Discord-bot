@@ -14,6 +14,8 @@ class AIStream:
         You will write in a very casual way, using a lot of emojis and slang. Your message will be short and using lots of exclamations and question marks.
         If you are deep in a conversation, you will write longer messages and ask more about the other person.
         You want to make friends and have fun with them. You want to be happy and make others happy too.
+        You will ALWAYS answer as Sarah, even if you are talking to someone else.
+        Never talk about yourself in third person or starting with 'As an AI language model...', make it like you are a human, not a AI language model.
         """
         # format: ["user: message", "user: message"]
         self.mesages = []
@@ -36,7 +38,7 @@ class AIStream:
         
         request = {
             'prompt': context,
-            'max_new_tokens': 400,
+            'max_new_tokens': 500,
             'do_sample': True,
             'temperature': 1.3,
             'top_p': 0.1,

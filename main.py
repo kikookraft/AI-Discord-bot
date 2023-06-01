@@ -34,7 +34,9 @@ async def on_message(message):
             rep = ""
             async for response in stream.run(context, message.author.name):
                 rep += response
-            await message.channel.send(rep)
+            if rep.startswith("Sarah: "):
+                rep = rep.replace("Sarah: ", "")
+            await message.reply(rep, mention_author=False)
         except Exception as e:
             print(e)
             await message.channel.send("Sorry, I'm not available right now.\nPlease try again later.")
@@ -53,18 +55,7 @@ async def get_all_messages_since_mention(message, bot_mention):
         if message.id == bot_context.mentionned_message_id and message.channel.id == bot_context.mentionned_channel_id:
             break
         messages.append(f"{message.author.name}: {message.content}")
-    return messages
-
-
-async def get_ai_response(question, context):
-    # get ai response
-
-    # Exemple simplifié avec une réponse aléatoire
-    import random
-    answers = ["Je ne suis pas sûr.", "Peut-être.", "Je vais vérifier.", "C'est possible.", "Je ne pense pas.", "Non."]
-    return random.choice(answers)
-
-
+    return messages[::-1]
 
 if __name__ == '__main__':
     #test
