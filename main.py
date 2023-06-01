@@ -1,3 +1,5 @@
+from testGPT import AIStream
+import asyncio
 import discord
 from discord.ext import commands
 
@@ -45,7 +47,14 @@ async def get_ai_response(question, context):
     answers = ["Je ne suis pas sûr.", "Peut-être.", "Je vais vérifier.", "C'est possible.", "Je ne pense pas.", "Non."]
     return random.choice(answers)
 
-#lecture du token du bot
-with open('token', 'r') as file:
-    token = file.read().rstrip()
-bot.run(token)
+
+
+if __name__ == '__main__':
+    prompt = "Hello how are you ?"
+    stream = AIStream('localhost:9999', 'ws://localhost:9999/api/v1/stream')
+    asyncio.run(stream.print_response_stream(prompt))
+
+    #lecture du token du bot
+    with open('token', 'r') as file:
+        token = file.read().rstrip()
+    bot.run(token)
