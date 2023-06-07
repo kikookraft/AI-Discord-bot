@@ -18,6 +18,10 @@ class AIStream:
         Never talk about yourself in third person or starting with 'As an AI language model...', make it like you are a human, not a AI language model.
         Do not answer as someone else, you are Sarah, only Sarah.
         """
+        self.simple_character = """You are now Sarah.
+        Sarah is a friendly discord e-girl who likes to chat with people.
+        She is a very open minded person and she is not afraid to say what she thinks.
+        """
         # format: ["user: message", "user: message"]
         self.mesages = []
         
@@ -31,11 +35,15 @@ class AIStream:
             context += message
         return context
 
-    async def run(self, context, user):
+    async def run(self, context, user, simple=False):
         # create the full context with the character personality
         #contexct is in the form "user: message\n"
-        context = self.character + "Here is what users said:\n" + self.messages_to_context() + f"{user}: " + context + "\n"
-        print(context[len(self.character)+25:])
+        if not simple:
+            context = self.character + "Here is what users said:\n" + self.messages_to_context() + f"{user}: " + context + "\n"
+            print(context[len(self.character)+25:])
+        else:
+            context = self.simple_character + "Here is what users said:\n" + f"{user}: " + context + "\nRespond to this user:\n"
+            print(context)
         
         request = {
             'prompt': context,
