@@ -23,7 +23,6 @@ class AIStream:
     async def run(self, context):
         # create the full context with the character personality
         #contexct is in the form "user: message\n"
-        print(context)
         
         request = {
             'prompt': context,

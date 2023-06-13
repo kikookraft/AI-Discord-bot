@@ -1,3 +1,5 @@
+# TODO: https://github.com/oobabooga/text-generation-webui/blob/main/api-examples/api-example-chat.py
+
 from AI import *
 import asyncio
 import discord
@@ -24,7 +26,8 @@ async def on_message(message):
             messages = await get_all_messages_since_mention(message, bot.user.mention)
         else:
             #only get the user message
-            messages = [f"{message.author.name}: {message.content.replace(bot.user.mention, '').strip()}"]
+            messages = [f"- {message.author.name}: {message.content.replace(bot.user.mention, '').strip()}"]
+            # messages = [f"{message.content.replace(bot.user.mention, '').strip()}"]
 
         # use AI to get response
         stream = AIStream('localhost:9999', 'ws://localhost:9999/api/v1/stream')
