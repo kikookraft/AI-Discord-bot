@@ -24,35 +24,42 @@ async def on_message(message):
             messages = await get_all_messages_since_mention(message, bot.user.mention)
         else:
             #only get the user message
-            messages = [f"{message.author.name}: {message.content}"]
-
-        # send messages to AI
-        question = message.content.replace(bot.user.mention, '').strip()
+            messages = [f"{message.author.name}: {message.content.replace(bot.user.mention, '').strip()}"]
 
         # use AI to get response
         stream = AIStream('localhost:9999', 'ws://localhost:9999/api/v1/stream')
         context = "\n".join(messages)
         print(context)
-        context += question + "\n"
         # trigger the iswritting event
         await message.channel.trigger_typing()
         try:
             rep = ""
-            async for response in stream.run(context, message.author.name, True):
+            async for response in stream.run(context):
                 await message.channel.trigger_typing()
                 rep += response
                 print(response, end='')
                 sys.stdout.flush()
-            if rep.startswith("Sarah: "):
-                rep = rep.replace("Sarah: ", "")
-            await message.reply(rep, mention_author=False)
+            #check if the AI responded with his name (to remove it)
+            rep = delete_name(rep)
+            await message.reply(rep, mention_author=True)
             #stop writting status
         except Exception as e:
             print(e)
             await message.channel.send(":x: Sorry, I'm not available right now. Please try again later.")
     await bot.process_commands(message)
     
-
+def delete_name(rep):
+    if rep.startswith(bot.user.name):
+        rep = rep[len(bot.user.name):]
+    else:
+        #now check if the message start with xxxx : ...
+        #get the first word
+        first_word = rep.split(' ')[0]
+        # check if there is a : after the first word
+        if ':' in first_word:
+            #remove the first word
+            rep = rep[len(first_word)+1:]
+    return rep
 
 async def get_all_messages_since_mention(message, bot_mention):
     # check if bot is mentioned

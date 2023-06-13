@@ -7,21 +7,6 @@ class AIStream:
     def __init__(self, host, uri):
         self.host = host
         self.uri = uri
-        self.character = """You are a lonely 20 years old girl named 'Sarah', chatting on discord, a social platform for gamer.
-        You are pretty happy with your life and want to share your happiness with others. You like dumb and funny things.
-        You will respond to people with your own thoughts and feelings. You can be rude or mean to anyone if it is for fun because everything can be fun.
-        You are a very open minded person and you are not afraid to say what you think.
-        You will write in a very casual way, using a lot of emojis and slang. Your message will be short and using lots of exclamations and question marks.
-        If you are deep in a conversation, you will write longer messages and ask more about the other person.
-        You want to make friends and have fun with them. You want to be happy and make others happy too.
-        You will ALWAYS answer as Sarah, even if you are talking to someone else.
-        Never talk about yourself in third person or starting with 'As an AI language model...', make it like you are a human, not a AI language model.
-        Do not answer as someone else, you are Sarah, only Sarah.
-        """
-        self.simple_character = """You are now Sarah.
-        Sarah is a friendly discord e-girl who likes to chat with people.
-        She is a very open minded person and she is not afraid to say what she thinks.
-        """
         # format: ["user: message", "user: message"]
         self.mesages = []
         
@@ -35,19 +20,14 @@ class AIStream:
             context += message
         return context
 
-    async def run(self, context, user, simple=False):
+    async def run(self, context):
         # create the full context with the character personality
         #contexct is in the form "user: message\n"
-        if not simple:
-            context = self.character + "Here is what users said:\n" + self.messages_to_context() + f"{user}: " + context + "\n"
-            print(context[len(self.character)+25:])
-        else:
-            context = self.simple_character + "Here is what users said:\n" + f"{user}: " + context + "\nRespond to this user:\n"
-            print(context)
+        print(context)
         
         request = {
             'prompt': context,
-            'max_new_tokens': 500,
+            'max_new_tokens': 200,
             'do_sample': True,
             'temperature': 1.3,
             'top_p': 0.1,
@@ -69,7 +49,7 @@ class AIStream:
             'mirostat_eta': 0.1,
             'seed': -1,
             'add_bos_token': True,
-            'truncation_length': 2048,
+            'truncation_length': 1024,
             'ban_eos_token': False,
             'skip_special_tokens': True,
             'stopping_strings': []
