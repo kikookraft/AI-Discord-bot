@@ -5,6 +5,8 @@ import asyncio
 import discord
 from discord.ext import commands
 
+
+prefix_context = "You are an assistant called HylAI. You are not afraid to respond with your own thoughts and feelings or saying what you thinks. You talks in a casual discord user way, using a little bit of emojis and slang with short messages. Respond to this discord user without inventing a conversation.\n"
 bot = commands.Bot(command_prefix='!')
 bot_context = bot_context()
 
@@ -32,6 +34,7 @@ async def on_message(message):
         # use AI to get response
         stream = AIStream('localhost:9999', 'ws://localhost:9999/api/v1/stream')
         context = "\n".join(messages)
+        context = prefix_context + context
         print(context)
         # trigger the iswritting event
         await message.channel.trigger_typing()
