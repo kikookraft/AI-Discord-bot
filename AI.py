@@ -51,7 +51,7 @@ class AIStream:
             'truncation_length': 1024,
             'ban_eos_token': False,
             'skip_special_tokens': True,
-            'stopping_strings': []
+            'stopping_strings': ["You", "You:", "You: ", "you", "you:"]
         }
         
         async with websockets.connect(self.uri, ping_interval=None) as websocket:
